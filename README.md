@@ -19,7 +19,7 @@ Step 2.
 Add the dependency to your app module.
   ```
   dependencies {
-	        implementation 'com.github.zandybillones07:TraceUtil-Android:Tag'
+	        implementation 'com.github.zandybillones07:TraceUtil-Android:0.1.0'
 	}
   ```
   
