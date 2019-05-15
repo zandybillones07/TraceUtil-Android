@@ -4,26 +4,46 @@ import android.util.Log;
 
 public class Trace {
 
-    private static final String TAG = "MINE";
+    private boolean isEnabled = true;
+    private String tag = "MINE";
+
+    private static volatile Trace instance = new Trace();
+
+    private Trace() {}
+
+    public static Trace getInstance() {
+        return instance;
+    }
 
     public static void show(String message) {
         String className = Thread.currentThread().getStackTrace()[3].getFileName();
         String methodName = Thread.currentThread().getStackTrace()[3].getMethodName();
 
-        largeLog(className + " " + methodName + " > " + message);
-
-    }
-
-
-
-
-    public static void largeLog(String content) {
-        if (content.length() > 4000) {
-            Log.d(TAG, "\n" + content.substring(0, 4000));
-            largeLog(content.substring(4000));
-        } else {
-            Log.d(TAG, "\n" + content);
+        if (getInstance().isEnabled) {
+            getInstance().largeLog(className + " " + methodName + " > " + message);
         }
     }
+
+
+
+
+    public void largeLog(String content) {
+        String tag = getInstance().tag;
+        if (content.length() > 4000) {
+            Log.d(tag, "\n" + content.substring(0, 4000));
+            largeLog(content.substring(4000));
+        } else {
+            Log.d(tag, "\n" + content);
+        }
+    }
+
+    public static void isEnabled(boolean isEnabled) {
+        getInstance().isEnabled = isEnabled;
+    }
+
+    public static void setTag(String tagName) {
+        getInstance().tag = tagName;
+    }
+
 
 }
